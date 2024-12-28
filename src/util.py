@@ -1,7 +1,7 @@
 """Utilities for working with statcast data."""
 
 import pybaseball as pb
-from pandas import DataFrame
+from pandas import DataFrame, Series
 
 swinging_descriptions = [
     "hit_into_play",
@@ -75,12 +75,23 @@ nonhit_avg_events = [
     "triple_play",
 ]
 
+
 def average(data: DataFrame) -> float:
     """
     Calculate batting average for a dataset of pitches.
     They should already be filtered to whatever player(s) you want to analyze.
     """
 
-    hits = data[data['events'].isin(hit_events)]
-    nonhit_nonwalk = data[data['events'].isin(nonhit_avg_events)]
+    hits = data[data["events"].isin(hit_events)]
+    nonhit_nonwalk = data[data["events"].isin(nonhit_avg_events)]
     return len(hits) / (len(hits) + len(nonhit_nonwalk))
+
+
+def batter_ids(data: DataFrame) -> Series:
+    """Get a Series of every unique batter ID for a dataset."""
+    return data["batter"].unique()
+
+
+def pitcher_ids(data: DataFrame) -> Series:
+    """Get a Series of every unique pitcher ID for a dataset."""
+    return data["pitcher"].unique()
