@@ -36,6 +36,7 @@ scipy==1.14.1
 six==1.17.0
 soupsieve==2.6
 SQLAlchemy==2.0.36
+tk==0.1.0
 tqdm==4.67.1
 typing_extensions==4.12.2
 tzdata==2024.2
