@@ -2,6 +2,7 @@
 
 import pybaseball as pb
 from pandas import DataFrame, Series
+import numpy
 
 swinging_descriptions = [
     "hit_into_play",
@@ -87,11 +88,15 @@ def average(data: DataFrame) -> float:
     return len(hits) / (len(hits) + len(nonhit_nonwalk))
 
 
-def batter_ids(data: DataFrame) -> Series:
+def batter_ids(data: DataFrame) -> numpy.ndarray:
     """Get a Series of every unique batter ID for a dataset."""
     return data["batter"].unique()
 
 
-def pitcher_ids(data: DataFrame) -> Series:
+def pitcher_ids(data: DataFrame) -> numpy.ndarray:
     """Get a Series of every unique pitcher ID for a dataset."""
     return data["pitcher"].unique()
+
+
+def pitch_types(data: DataFrame) -> numpy.ndarray:
+    return data["pitch_name"].unique()
