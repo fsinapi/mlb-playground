@@ -87,6 +87,11 @@ def average(data: DataFrame) -> float:
     nonhit_nonwalk = data[data["events"].isin(nonhit_avg_events)]
     return len(hits) / (len(hits) + len(nonhit_nonwalk))
 
+def evs(data: DataFrame) -> Series:
+    """Get array of exit velocities for a dataset of pitches.
+    They should already be filtered to whatever player(s) you want to analyze."""
+    balls_in_play = data[(data['events'].notnull() & data['launch_speed'].notnull())]
+    return balls_in_play['launch_speed']
 
 def batter_ids(data: DataFrame) -> numpy.ndarray:
     """Get a Series of every unique batter ID for a dataset."""
