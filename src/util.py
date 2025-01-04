@@ -27,6 +27,8 @@ def zcon(data: DataFrame) -> float:
     zone_swings = d2[d2["description"].isin(swinging_descriptions)]
     # [data['description'] in swinging_descriptions]
     zone_contact = zone_swings[zone_swings["description"].isin(contact_descriptions)]
+    if len(zone_swings) == 0:
+        return 0
     return float(len(zone_contact)) / float(len(zone_swings))
 
 
@@ -82,7 +84,6 @@ def average(data: DataFrame) -> float:
     Calculate batting average for a dataset of pitches.
     They should already be filtered to whatever player(s) you want to analyze.
     """
-
     hits = data[data["events"].isin(hit_events)]
     nonhit_nonwalk = data[data["events"].isin(nonhit_avg_events)]
     return len(hits) / (len(hits) + len(nonhit_nonwalk))
