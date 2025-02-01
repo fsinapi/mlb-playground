@@ -67,9 +67,9 @@ if __name__ == "__main__":
         batted_balls = events[events['launch_speed'].notnull()]
 
         average = util.average(pitches)
-        obp = 0.0
-        slg = 0.0
-        ops = 0.0
+        obp = util.obp(pitches)
+        slg = util.slg(pitches)
+        ops = obp + slg
 
         evs = util.evs(pitches).sort_values()
         if len(evs) == 0:
