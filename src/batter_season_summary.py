@@ -35,6 +35,7 @@ class Player:
     obp: float 
     slg: float 
     ops: float 
+    ops_plus: float
 
     exit_velo_10th: float 
     exit_velo_avg: float
@@ -59,6 +60,12 @@ if __name__ == "__main__":
 
     players: List[Player] = []
 
+    league_obp = util.obp(year)
+    league_slg = util.slg(year)
+
+    print(f"  League OBP: {league_obp}")
+    print(f"  League SLG: {league_slg}")
+
     for id in batter_ids:
         
         name = pb.playerid_reverse_lookup([id], key_type="mlbam").iloc[0]
@@ -70,6 +77,7 @@ if __name__ == "__main__":
         obp = util.obp(pitches)
         slg = util.slg(pitches)
         ops = obp + slg
+        ops_plus = 100.0 * ((obp / league_obp) + (slg / league_slg) - 1)
 
         evs = util.evs(pitches).sort_values()
         if len(evs) == 0:
@@ -95,6 +103,7 @@ if __name__ == "__main__":
             obp=obp,
             slg=slg,
             ops=ops,
+            ops_plus=ops_plus,
             exit_velo_10th=exit_velo_10th,
             exit_velo_avg=exit_velo_avg,
             exit_velo_90th=exit_velo_90th,
