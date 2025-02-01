@@ -8,3 +8,6 @@ python3 -m venv $VENV_FOLDER
 .  $VENV_FOLDER/bin/activate
 echo "Installing packages"
 pip install -r pipfile
+
+mkdir -p data/
+mkdir -p output/
