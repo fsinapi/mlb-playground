@@ -7,6 +7,7 @@ import util
 import pathlib
 from typing import List
 
+
 @dataclass
 class Arguments:
     input: pathlib.Path
@@ -23,28 +24,30 @@ def parse_args() -> Arguments:
 
     return Arguments(input=args.input, output=args.output)
 
-@dataclass 
+
+@dataclass
 class Player:
-    id: int 
-    name: str 
+    id: int
+    name: str
 
     plate_appearences: int
     batted_balls: int
 
-    average: float 
-    obp: float 
-    slg: float 
-    ops: float 
+    average: float
+    obp: float
+    slg: float
+    ops: float
     ops_plus: float
 
-    exit_velo_10th: float 
+    exit_velo_10th: float
     exit_velo_avg: float
-    exit_velo_90th: float 
-    exit_velo_max: float 
+    exit_velo_90th: float
+    exit_velo_max: float
 
-    zcon: float 
+    zcon: float
     zcon_0_or_1_strikes: float
     zcon_2_strikes: float
+
 
 if __name__ == "__main__":
     args = parse_args()
@@ -67,11 +70,11 @@ if __name__ == "__main__":
     print(f"  League SLG: {league_slg}")
 
     for id in batter_ids:
-        
+
         name = pb.playerid_reverse_lookup([id], key_type="mlbam").iloc[0]
         pitches = year[year["batter"] == id]
-        events = pitches[pitches['events'].notnull()]
-        batted_balls = events[events['launch_speed'].notnull()]
+        events = pitches[pitches["events"].notnull()]
+        batted_balls = events[events["launch_speed"].notnull()]
 
         average = util.average(pitches)
         obp = util.obp(pitches)
@@ -81,22 +84,22 @@ if __name__ == "__main__":
 
         evs = util.evs(pitches).sort_values()
         if len(evs) == 0:
-            continue 
+            continue
         exit_velo_10th = evs.array[int(len(evs) * 0.1)]
         exit_velo_avg = evs.mean()
         exit_velo_90th = evs.array[int(len(evs) * 0.9)]
         exit_velo_max = evs.array[-1]
-        
+
         two_strikes = pitches[pitches["strikes"] == 2]
         not_two_strikes = pitches[pitches["strikes"] < 2]
-        
+
         zcon = util.zcon(pitches)
         zcon_0_or_1_strikes = util.zcon(not_two_strikes)
         zcon_2_strikes = util.zcon(two_strikes)
-        
+
         summary = Player(
-            id=id, 
-            name=name['name_first'] + " " + name['name_last'],
+            id=id,
+            name=name["name_first"] + " " + name["name_last"],
             plate_appearences=len(events),
             batted_balls=len(batted_balls),
             average=average,
@@ -110,7 +113,8 @@ if __name__ == "__main__":
             exit_velo_max=exit_velo_max,
             zcon=zcon,
             zcon_0_or_1_strikes=zcon_0_or_1_strikes,
-            zcon_2_strikes=zcon_2_strikes)
+            zcon_2_strikes=zcon_2_strikes,
+        )
         players.append(summary)
-    
+
     pandas.DataFrame(players).to_csv(args.output)

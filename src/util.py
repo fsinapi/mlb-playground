@@ -114,6 +114,7 @@ non_on_base_events = [
     "sac_fly_double_play",
 ]
 
+
 def obp(data: DataFrame) -> float:
     """
     Calculate OBP for a dataset of pitches.
@@ -127,22 +128,24 @@ def obp(data: DataFrame) -> float:
         return 0.0
     return len(on) / (len(on) + len(not_on))
 
+
 slg_weights = {
-    "strikeout" : 0,
-    "field_out" : 0,
-    "single" : 1,
-    "double" : 2,
-    "force_out" : 0,
-    "fielders_choice" : 0,
-    "field_error" : 0,
-    "home_run" : 4,
-    "grounded_into_double_play" : 0,
-    "double_play" : 0,
-    "strikeout_double_play" : 0,
-    "fielders_choice_out" : 0,
-    "triple" : 3,
-    "triple_play" : 0,
+    "strikeout": 0,
+    "field_out": 0,
+    "single": 1,
+    "double": 2,
+    "force_out": 0,
+    "fielders_choice": 0,
+    "field_error": 0,
+    "home_run": 4,
+    "grounded_into_double_play": 0,
+    "double_play": 0,
+    "strikeout_double_play": 0,
+    "fielders_choice_out": 0,
+    "triple": 3,
+    "triple_play": 0,
 }
+
 
 def slg(data: DataFrame) -> float:
     """
@@ -158,14 +161,15 @@ def slg(data: DataFrame) -> float:
             sum += slg_weights[e]
     if count == 0:
         return 0.0
-    return float(sum) / float(count) 
+    return float(sum) / float(count)
 
 
 def evs(data: DataFrame) -> Series:
     """Get array of exit velocities for a dataset of pitches.
     They should already be filtered to whatever player(s) you want to analyze."""
-    balls_in_play = data[(data['events'].notnull() & data['launch_speed'].notnull())]
-    return balls_in_play['launch_speed']
+    balls_in_play = data[(data["events"].notnull() & data["launch_speed"].notnull())]
+    return balls_in_play["launch_speed"]
+
 
 def batter_ids(data: DataFrame) -> numpy.ndarray:
     """Get a Series of every unique batter ID for a dataset."""
