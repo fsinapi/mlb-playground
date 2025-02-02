@@ -34,22 +34,24 @@ with ui.card():
     @render.text()
     def name():
         id = input.pitcher_id()
-        print(f"ID is {id}")
-        name = pb.playerid_reverse_lookup(player_ids=[int(id)], key_type="mlbam").iloc[0]
+        name = pb.playerid_reverse_lookup(player_ids=[int(id)], key_type="mlbam").iloc[
+            0
+        ]
         return f"{name["name_first"]} {name["name_last"]} [{id}]"
 
     with ui.layout_columns(col_widths=[5, 7], fill=True):
+
         @render.image(delete_file=True)
         def picture():
             id = str(input.pitcher_id())
-            filepath = ''
+            filepath = ""
             url = f"https://img.mlbstatic.com/mlb-photos/image/upload/d_people:generic:headshot:silo:current.png/r_max/w_180,q_auto:best/v1/people/{id}/headshot/silo/current"
             with tempfile.NamedTemporaryFile(delete=False) as pic:
                 filepath = pic.name
                 pic.write(requests.get(url).content)
             return {
-                "src" : filepath,
-                "width" : "180px",
+                "src": filepath,
+                "width": "180px",
                 "height": "180px",
             }
 
@@ -59,16 +61,10 @@ with ui.card():
             pitches = year[year["pitcher"] == np.int64(id)]
             sum = pitches.sum(axis=0, numeric_only=True)
             return pandas.DataFrame(
-                data=[
-                    len(pitches), 
-                    sum.loc['post_bat_score'] - sum.loc['bat_score']
-                ],
-                index=[
-                    'Pitches Thrown',
-                    'Runs Allowed'
-                ]
+                data=[len(pitches), sum.loc["post_bat_score"] - sum.loc["bat_score"]],
+                index=["Pitches Thrown", "Runs Allowed"],
             )
-                
+
 
 with ui.card():
     ui.card_header("Pitch Arsenal")
